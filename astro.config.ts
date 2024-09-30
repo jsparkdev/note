@@ -4,6 +4,7 @@ import starlightThemeRapide from "starlight-theme-rapide";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://note-5q8.pages.dev",
   integrations: [
     starlight({
       plugins: [starlightThemeRapide()],
