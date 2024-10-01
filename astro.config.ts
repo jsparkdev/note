@@ -9,6 +9,10 @@ export default defineConfig({
     starlight({
       plugins: [starlightThemeRapide()],
       title: "Note",
+      logo: {
+        src: "./src/assets/logo.svg",
+        replacesTitle: true,
+      },
       credits: true,
       titleDelimiter: " - ",
       social: {
