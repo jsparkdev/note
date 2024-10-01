@@ -10,6 +10,7 @@ export default defineConfig({
       plugins: [starlightThemeRapide()],
       title: "Note",
       credits: true,
+      titleDelimiter: " - ",
       social: {
         github: "https://github.com/jsparkdev/note",
       },
@@ -25,8 +26,16 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: "Notes",
-          autogenerate: { directory: "notes" },
+          label: "JavaScript",
+          autogenerate: { directory: "js" },
+        },
+        {
+          label: "TypeScript",
+          autogenerate: { directory: "ts" },
+        },
+        {
+          label: "React",
+          autogenerate: { directory: "react" },
         },
       ],
     }),
