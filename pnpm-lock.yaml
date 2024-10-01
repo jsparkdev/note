@@ -11,9 +11,18 @@ importers:
       '@astrojs/check':
         specifier: ^0.9.3
         version: 0.9.3(typescript@5.6.2)
+      '@astrojs/sitemap':
+        specifier: ^3.1.6
+        version: 3.1.6
       '@astrojs/starlight':
         specifier: ^0.28.2
         version: 0.28.2(astro@4.15.9(rollup@4.22.5)(typescript@5.6.2))
+      '@fontsource/jetbrains-mono':
+        specifier: ^5.1.0
+        version: 5.1.0
+      '@fontsource/pretendard':
+        specifier: ^5.1.0
+        version: 5.1.0
       astro:
         specifier: ^4.15.9
         version: 4.15.9(rollup@4.22.5)(typescript@5.6.2)
@@ -361,6 +370,12 @@ packages:
 
   '@expressive-code/plugin-text-markers@0.35.6':
     resolution: {integrity: sha512-/k9eWVZSCs+uEKHR++22Uu6eIbHWEciVHbIuD8frT8DlqTtHYaaiwHPncO6KFWnGDz5i/gL7oyl6XmOi/E6GVg==}
+
+  '@fontsource/jetbrains-mono@5.1.0':
+    resolution: {integrity: sha512-YzWpGYY3PoqvmvwW2Hb4NwkN5C7LO0FmZugEGcFe6cNNE/cMgH9JhW5LI6hjG+1+nwgSHyJtKmblHNrUqlyhWg==}
+
+  '@fontsource/pretendard@5.1.0':
+    resolution: {integrity: sha512-aUkTiTYKDX/919OJqKKyly4cuoets76Cwjqw1qNTCFpIdVMpOm5uGEpreIPabDdp1ReYdeVfB94Wxyn5Q9jrBQ==}
 
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
@@ -2611,6 +2626,10 @@ snapshots:
   '@expressive-code/plugin-text-markers@0.35.6':
     dependencies:
       '@expressive-code/core': 0.35.6
+
+  '@fontsource/jetbrains-mono@5.1.0': {}
+
+  '@fontsource/pretendard@5.1.0': {}
 
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:

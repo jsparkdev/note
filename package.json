@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.3",
+    "@astrojs/sitemap": "^3.1.6",
     "@astrojs/starlight": "^0.28.2",
+    "@fontsource/jetbrains-mono": "^5.1.0",
+    "@fontsource/pretendard": "^5.1.0",
     "astro": "^4.15.9",
     "sharp": "^0.33.5",
     "starlight-theme-rapide": "^0.2.0",
