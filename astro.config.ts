@@ -15,12 +15,7 @@ export default defineConfig({
         src: "./src/assets/logo.svg",
         replacesTitle: true,
       },
-      customCss: [
-        "@fontsource/pretendard/400.css",
-        "@fontsource/pretendard/600.css",
-        "@fontsource/jetbrains-mono",
-        "./src/custom.css",
-      ],
+      customCss: ["@fontsource/jetbrains-mono", "./src/custom.css"],
       credits: true,
       titleDelimiter: " - ",
       social: {
@@ -38,6 +33,17 @@ export default defineConfig({
           lang: "ko-KR",
         },
       },
+      head: [
+        {
+          tag: "link",
+          attrs: {
+            rel: "stylesheet",
+            as: "style",
+            crossorigin: "anonymous",
+            href: "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css",
+          },
+        },
+      ],
       sidebar: [
         {
           label: "JavaScript",
