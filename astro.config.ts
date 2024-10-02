@@ -1,12 +1,13 @@
+import sitemap from "@astrojs/sitemap";
 import starlight from "@astrojs/starlight";
 import { defineConfig } from "astro/config";
 import starlightThemeRapide from "starlight-theme-rapide";
 
-import sitemap from "@astrojs/sitemap";
-
-// https://astro.build/config
 export default defineConfig({
   site: "https://note.jspark.dev",
+  prefetch: {
+    defaultStrategy: "viewport",
+  },
   integrations: [
     starlight({
       plugins: [starlightThemeRapide()],
