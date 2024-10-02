@@ -48,16 +48,19 @@ export default defineConfig({
       sidebar: [
         {
           label: "JavaScript",
+          collapsed: true,
           autogenerate: { directory: "js" },
         },
-        // {
-        //   label: "TypeScript",
-        //   autogenerate: { directory: "ts" },
-        // },
-        // {
-        //   label: "React",
-        //   autogenerate: { directory: "react" },
-        // },
+        {
+          label: "TypeScript",
+          collapsed: true,
+          autogenerate: { directory: "ts" },
+        },
+        {
+          label: "React",
+          collapsed: true,
+          autogenerate: { directory: "react" },
+        },
       ],
     }),
     sitemap({
