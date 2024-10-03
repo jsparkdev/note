@@ -1,5 +1,5 @@
 ---
-title: Satisfies 연산자
+title: satisfies 연산자
 description: Satisfies 연산자를 사용하여 객체의 타입을 검사하는 방법에 대해 알아봅니다.
 ---
 

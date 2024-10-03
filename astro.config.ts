@@ -17,8 +17,8 @@ export default defineConfig({
         replacesTitle: true,
       },
       customCss: ["@fontsource/jetbrains-mono", "./src/custom.css"],
-      credits: true,
       titleDelimiter: " - ",
+      pagination: false,
       social: {
         github: "https://github.com/jsparkdev/note",
         mastodon: "https://mastodon.social/@jsparkdev",
