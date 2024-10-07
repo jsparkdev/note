@@ -33,7 +33,7 @@ const greenHex = palette.green.toUpperCase(); // Property 'toUpperCase' does not
 
 `palette.green`은 문자열이지만, 타입 어노테이션에 의해 `string | number[]`로 추론되어 오류가 발생합니다.
 
-## Satisfies
+## satisfies
 
 타입을 강제하지 않으며, 오직 타입 검사만 수행하고, 올바른 값을 추론합니다.
 
