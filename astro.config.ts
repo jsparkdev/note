@@ -8,6 +8,11 @@ export default defineConfig({
 	prefetch: {
 		defaultStrategy: "viewport",
 	},
+	vite: {
+		build: {
+			target: "esnext",
+		},
+	},
 	integrations: [
 		starlight({
 			plugins: [starlightThemeRapide()],
