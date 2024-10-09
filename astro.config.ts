@@ -75,12 +75,6 @@ export default defineConfig({
       expressiveCode: {
         // @ts-ignore
         plugins: [pluginCollapsibleSections()],
-        styleOverrides: {
-          // @ts-ignore
-          collapsibleSections: {
-            closedBackgroundColor: "#011e2e",
-          },
-        },
       },
     }),
     sitemap({
