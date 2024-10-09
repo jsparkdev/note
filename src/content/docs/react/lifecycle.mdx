@@ -3,18 +3,16 @@ title: 컴포넌트의 라이프사이클
 description: React 컴포넌트의 라이프사이클에 대해 알아봅니다.
 ---
 
-import { Aside, Steps } from '@astrojs/starlight/components';
+import { Aside } from '@astrojs/starlight/components';
 
 ## 컴포넌트 마운트
 
-<Steps>
 1. 지연 초기화가 발생합니다.
 2. 컴포넌트가 렌더링됩니다.
 3. React가 DOM을 업데이트합니다.
 4. 레이아웃 이펙트가 실행됩니다.
 5. 브라우저 페인팅
 6. 이펙트가 실행됩니다.
-</Steps>
 
 ## 컴포넌트 업데이트
 
@@ -27,7 +25,6 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 - 컨텍스트 업데이트
 </Aside>
 
-<Steps>
 1. 컴포넌트가 렌더링됩니다.
 2. React가 DOM을 업데이트합니다.
 3. 이전 레이아웃 이펙트가 제거됩니다.
@@ -35,14 +32,11 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 5. 브라우저 페인팅
 6. 이전 이펙트가 제거됩니다.
 7. 이펙트가 실행됩니다.
-</Steps>
 
 ## 컴포넌트 언마운트
 
-<Steps>
 1. 이전 레이아웃 이펙트가 제거됩니다.
 2. 이전 이펙트가 제거됩니다.
-</Steps>
 
 ![React Hook Flow](https://github.com/donavon/hook-flow/blob/master/hook-flow.png?raw=true)
 
@@ -50,7 +44,7 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 
 <Aside title='기본 동작'>
 
-- 컴포넌트가 렌더링되면 함수 내부 코드가 모두 재평가됩니다.
+- 컴포넌트가 렌더링되면 컴포넌트 함수가 실행되어 내부 코드가 모두 재평가됩니다.
 - React가 DOM을 업데이트하면 재평가된 코드가 모두 적용됩니다.
 - 브라우저 페인팅이 발생하면 브라우저가 페이지의 시각적 표현을 업데이트합니다.
 

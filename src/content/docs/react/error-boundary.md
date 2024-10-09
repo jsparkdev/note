@@ -1,19 +1,19 @@
 ---
-title: Error Boundary
-description: React Error Boundary를 사용하여 React 컴포넌트에서 발생하는 오류를 처리하는 방법을 알아봅니다.
+title: 에러 바운더리
+description: react-error-boundary 라이브러리를 사용하여 React 컴포넌트에서 발생하는 오류를 처리하는 방법을 알아봅니다.
 ---
 
-컴포넌트 렌더링 시 발생하는 오류는 런타임에 발생하므로 미리 제거하기 힘듭니다.
+컴포넌트 렌더링 시 발생하는 오류는 런타임에 발생하므로 `try catch` 구문을 사용하여 이를 해결할 수 있습니다.
 
-물론, 컴포넌트에서 `try - catch` 구문을 사용하여 이를 해결할 수 있지만, 모든 컴포넌트에서 이를 사용하는 것은 매우 비효율적입니다.
+하지만, 모든 컴포넌트에서 사용하는 것은 비효율적이기에 [`react-error-boundary`](https://www.npmjs.com/package/react-error-boundary)와 같은 라이브러리를 사용하여 이 문제를 해결하는 것이 일반적입니다.
 
-[`react-error-boundary`](https://www.npmjs.com/package/react-error-boundary) 라이브러리를 사용하면 이러한 복잡한 문제를 매우 간단하게 해결할 수 있습니다.
+이 게시물에서는 해당 라이브러리를 사용하여 문제를 해결하는 방법에 대해 알아봅니다.
 
 ## 동작 원리
 
 컴포넌트 렌더링을 시도하고, 성공하면 해당 컴포넌트를 렌더링하며, 실패하면 대체 컴포넌트를 렌더링합니다.
 
-다음과 같은 방식으로 동작한다고 생각할 수 있습니다.
+즉, 동작 원리는 다음과 같다고 할 수 있습니다.
 
 ```tsx
 <Try catch={<div>Oh no!</div>}>
@@ -21,7 +21,7 @@ description: React Error Boundary를 사용하여 React 컴포넌트에서 발�
 </Try>
 ```
 
-실제 코드 역시, 위 예시와 매우 유사합니다.
+실제 코드는 다음과 같습니다.
 
 ```tsx
 <ErrorBoundary fallback={<div>Oh no!</div>}>
@@ -31,9 +31,9 @@ description: React Error Boundary를 사용하여 React 컴포넌트에서 발�
 
 ### 대체 컴포넌트
 
-대체 컴포넌트를 만드는 방법은 다양하지만 다음과 같은 코드를 사용하는 것을 권장합니다.
+만드는 방법은 다양하지만 다음과 같이 컴포넌트의 Props 타입을 가져와 사용하는 것을 권장합니다.
 
-```tsx
+```tsx {3, 6}
 import {
 	ErrorBoundary,
 	type FallbackProps,
@@ -49,7 +49,7 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
 }
 ```
 
-이렇게 만들어진 대체 컴포넌트는 `ErrorBoundary` 컴포넌트의 `FallbackComponent` 프로퍼티로 전달합니다.
+이렇게 만들어진 대체 컴포넌트를 `ErrorBoundary` 컴포넌트의 `FallbackComponent` 프로퍼티로 전달합니다.
 
 ```tsx
 <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -59,13 +59,11 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
 
 ## 비동기 오류 해결
 
-`react-error-boundary`는 기본적으로 컴포넌트 렌더링 과정에서 발생하는 오류를 해결하기 위해 사용되는 라이브러리입니다.
-
-하지만, `useEffect`, 이벤트 핸들러 등 컴포넌트 렌더링 후 비동기 작업에서 발생하는 오류를 처리할 수도 있습니다.
+기본적으로 컴포넌트 렌더링 시 발생하는 오류를 해결하기 위해 사용되는 라이브러리이지만, 컴포넌트 렌더링 후 비동기로 동작하는 작업에서 발생하는 오류를 처리할 수도 있습니다.
 
 이러한 오류를 처리하기 위해서는 `useErrorBoundary` 훅을 사용합니다.
 
-```tsx {6, 18}
+```tsx {18} ins={1-3, 6}
 import {
 	useErrorBoundary,
 } from 'react-error-boundary'

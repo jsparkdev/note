@@ -1,43 +1,17 @@
 ---
-title: event.target과 event.currentTarget 비교
-description: 이벤트의 작동 방식과 event.target과 event.currentTarget의 차이점을 알아봅니다.
+title: 이벤트의 target 및 currentTarget
+description: JavaScript 이벤트 객체의 target 및 currentTarget 속성에 대해 알아봅니다.
 ---
 
-`event.target`과 `event.currentTarget`을 이해하기 위해서는 먼저 이벤트가 어떻게 작동하는지 이해해야 합니다.
+import { Aside } from '@astrojs/starlight/components';
 
-## 이벤트의 작동 방식
+<Aside type="tip" title="사전 지식">
+이 게시물을 이해하기 위해서는 [이벤트 캡처링과 버블링](/js/event-capturing-and-bubbling)에 대한 지식이 필요합니다.
+</Aside>
 
-import { Steps, Card } from '@astrojs/starlight/components';
+다음과 같은 HTML 파일을 작성합니다.
 
-<Steps>
-
-1. 이벤트 전파 (캡처링) 단계
-
-    이벤트가 DOM 트리의 최상위 요소에서 타겟 요소 (최하위 요소)까지 내려가면서 전파됩니다.
-
-    <Card title="이벤트 캡처링">`Window` - `Document` - `<html>` - `<body>` - `<div>` - ...</Card>
-
-    기본적으로 캡처링은 [별도의 설정](https://developer.mozilla.org/ko/docs/Web/API/EventTarget/addEventListener#capture)을 하지 않았다면 발생하지 않습니다.
-
-2. 이벤트가 타겟 요소에 도달합니다.
-
-    타겟 요소는 중첩된 요소 중 가장 깊은 곳에 위치한 요소이며, 이벤트 핸들러가 연결된 요소가 아닐 수도 있습니다.
-
-3. 이벤트 버블링 단계
-
-    이벤트가 타겟 요소에서 DOM 트리를 따라 최상위 요소까지 올라갑니다. 대부분의 이벤트 핸들링이 발생하는 단계입니다.
-
-    <Card title="이벤트 버블링">`<div>` - `<body>` - `<html>` - `Document` - `Window`</Card>
-
-</Steps>
-
-## 예시
-
-이벤트가 어떻게 작동하는지 이해했으므로, 예시를 통해 `event.target`과 `event.currentTarget`이 무엇을 가리키는지 알아보도록 하겠습니다.
-
-우선, 다음과 같은 `.html` 파일을 작성하였습니다.
-
-이 파일에는 `<div>` 태그가 5레벨 중첩되어 있으며, 타겟 요소는 `<button>` 태그입니다.
+이 파일에는 5레벨 중첩된 `<div>` 태그와 최하위 요소인 `<button>` 태그가 포함되어 있습니다.
 
 ```html
 <div id="level-1">
@@ -52,8 +26,9 @@ import { Steps, Card } from '@astrojs/starlight/components';
   </div>
 </div>
 ```
+id의 값이 `level-3`인 `<div>` 태그에 다음과 같이 이벤트 리스너를 추가합니다.
 
-id가 `level-3`인 `<div>` 태그에 `event.target`과 `event.currentTarget`의 값을 콘솔에 출력하는 클릭 이벤트를 추가하였습니다.
+이제 해당 요소를 클릭하면 `target` 및 `currentTarget` 속성의 값이 콘솔에 출력됩니다.
 
 ```js
 const lv3 = document.querySelector('#level-3');
@@ -64,16 +39,14 @@ lv3.addEventListener('click', function (event) {
 });
 ```
 
-버튼을 클릭했을 때, 결과는 다음과 같습니다.
+버튼을 클릭하여 이벤트를 발생시키면 콘솔에는 다음 메시지가 출력됩니다.
 
 ```html
 target <button>​Click!​</button>​
 currentTarget <div id=​"level-3">​…​</div>​
 ```
 
-`event.target`의 값은 중첩의 최하위에 위치한 타겟 요소인 `<button>`이고, `event.currentTarget`의 값은 이벤트 핸들러가 추가된 `<div>` 태그입니다.
+이 메시지를 통해 알 수 있는 점은 다음과 같습니다.
 
-## 요약
-
-- `event.target`: 이벤트가 발생한 정확한 지점, 중첩된 요소 중 가장 깊은 곳에 위치한 요소
-- `event.currentTarget`: 이벤트 핸들러가 연결된 요소
+- `target`의 값은 이벤트가 발생한 DOM 트리의 최하위 요소입니다. 이는 타겟 요소라고도 불립니다.
+- `currentTarget`의 값은 이벤트 핸들러가 연결된 요소입니다.

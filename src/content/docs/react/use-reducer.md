@@ -1,13 +1,13 @@
 ---
-title: useReducer 훅을 이용한 상태관리 
-description: 상태관리를 위해 useReducer 훅을 사용하는 방법에 대해 알아봅니다.
+title: useReducer를 이용한 상태관리
+description: 상태관리를 위해 useReducer를 사용하는 방법에 대해 알아봅니다.
 ---
 
-`useReducer` 훅은 `useState` 훅처럼 상태를 관리하기 위해 사용되는 훅입니다.
+`useReducer`는 `useState`처럼 상태를 관리하기 위해 사용되는 훅입니다.
 
 ## 사용 방법
 
-`useState`를 `useReducer`로 마이그레이션하면서 `useReducer`의 사용 방법과 동작 원리에 대해 알아보겠습니다.
+기존에 `useState`를 사용하던 코드를 `useReducer`로 마이그레이션하면서 사용 방법과 동작 원리에 대해 알아보겠습니다.
 
 다음과 같이 `useState`를 사용하여 상태를 관리하는 카운터 앱을 준비합니다.
 
@@ -29,7 +29,7 @@ function App() {
 export default App;
 ```
 
-가장 먼저, `useState`를 `useReducer`로 변경하고, 리듀서 함수를 생성합니다. 
+가장 먼저, `useState`를 `useReducer`로 변경하고, 컴포넌트 외부에 리듀서 함수를 생성합니다.
 
 리듀서 함수는 두 개의 매개변수를 가지며, 새로운 상태로 사용할 값을 반환합니다.
 
@@ -38,7 +38,7 @@ export default App;
 
 그리고 `useReducer`의 첫 번째 인자로 리듀서 함수를, 두 번째 인자로 초기 상태 값을 전달합니다.
 
-```tsx ins={3-5, 9} del={8}
+```tsx ins={3-5, 9} del={8} collapse={10-20}
 import { useReducer } from 'react';
 
 function countReducer(state: number, newState: number) {
@@ -61,7 +61,7 @@ function App() {
 export default App;
 ```
 
-`useReducer`가 반환하는 `setCount`는 `useState`가 반환하는 함수와 다른 동작을 수행합니다. 
+`useReducer`가 반환하는 `setCount`는 `useState`가 반환하는 함수와 다른 동작을 수행합니다.
 
 - `useState`가 반환하는 `setCount`는 해당 값으로 상태를 업데이트하고 리렌더링을 트리거합니다.
 - `useReducer`가 반환하는 `setCount`는 전달받은 값을 리듀서 함수의 두 번째 인자로 전달합니다.
