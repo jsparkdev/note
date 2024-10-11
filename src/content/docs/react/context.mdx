@@ -9,7 +9,7 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 
 <Aside type="tip">
 - 데이터가 자주 변경된다면 [zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)와 같은 전역 상태 관리 라이브러리를 사용하는 것이 권장됩니다.
-- Props Drilling이 거의 없다면 상태를 부모 컴포넌트로 이동하여 사용하는 것이 권장됩니다.
+- Props Drilling이 거의 없다면 상태를 부모 컴포넌트로 이동하여 공유하는 것이 권장됩니다.
 </Aside>
 
 ## 사용 방법
@@ -76,6 +76,7 @@ import { Aside, Steps } from '@astrojs/starlight/components';
       function Outer({ value }: { value: number }) {
         // ...
       ```
+
   3. 생성한 컨텍스트로 상태를 전달받는 모든 하위 요소를 래핑합니다.
 
       ```tsx collapse={1-7, 11-17} ins={8, 10}
@@ -169,5 +170,5 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 
 ## 주의 사항
 
-- `value`로 전달한 변경되면 컨텍스트로 래핑된 하위 컴포넌트가 모두 리렌더링됩니다.
-- 
+- `value`로 전달한 값이 변경되면 컨텍스트로 래핑된 하위 컴포넌트가 모두 리렌더링됩니다.
+- 일반적으로 기본값에 `null`을 할당하고, 컴포넌트에서 값을 계산하여 `value`로 전달합니다.

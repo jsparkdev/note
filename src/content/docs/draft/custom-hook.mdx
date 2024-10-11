@@ -1,0 +1,49 @@
+---
+title: 커스텀 훅
+description: 반복적으로 사용되는 논리를 커스텀 훅으로 만들어 여러 컴포넌트에서 재사용하는 방법을 알아봅니다.
+---
+
+커스텀 훅은 그냥 훅을 사용하는 함수임. 어떤 훅을 사용하는 논리가 계속 재사용된다? 그러면 커스텀 훅으로 만들어서 여러 컴포에서 쓰는거지.
+
+예를들어 [count, setcount] 대신 [count, increase]를 만들고 싶다고 하자. 그냥 호출만 하면 값이 늘어나는 함수.
+그 함수를 만들려면 setCount를 사용해야하지. 즉, 새로운 useCount 훅은 useState로 이걸 해야함.
+
+const [count, increase] = useCount()
+
+function useCount() {
+  const [count, setcount] = useState(0)
+  function increase() {
+    setCount(prev => prev + 1)
+  }
+  return [count, increase]
+}
+
+이렇게 되는거지.
+
+근데 커스텀 훅에서 조심해야할건 useEffect와 같은 의존성 배열을 가진 훅 내부에서 호출될 때임.
+increment 함수를 useEffect에서 쓴다고 생각해봐
+
+const [count, increment] = useCount()
+
+useEffect(() => {
+  const id = setInterval(() => {
+    increment()
+  }, 1000)
+  return () => clearInterval(id)
+}, [increment])
+
+문제는 매 재렌더링마다 increment가 새 함수라는거임.
+increment가 바뀌니까 이펙트가 새로 시작되어야 하므로 클린업이 실행된다는거임.
+클린업이 실행되면 기존 인터벌이 제거되고 다시 생성된다는 거임.
+그러면 매 재렌더링마다 id가 계속 새로 생성됨.
+
+그러면 우리가 해야할건 increment가 컴포넌트 재렌더링에도 새로 생성되지 않도록 만드는거임.
+이때 필요한게 useCallback 메모이제이션
+
+그럼 increment를 어떻게 메모하나?
+const increment = useCallback(() => setCount(prev => prev + 1), [])
+그냥 useCallback으로 감싸면 된다. 이러면 얘는 커스텀 훅이 다시 호출되어도 새 함수가 아닌 기존 함수를 반환한다.
+
+커스텀훅에서 useState쓸때 상태 초깃값을 함수로 제공해서 지연 초기화한다고 가정해보자
+이때 상태를 반환하면 값과 함수의 유니언으로 타입이 추론됨.
+이 경우 커스텀 훅이 해당 상태를 반환한다면 as const를 사용하는걸 권장
