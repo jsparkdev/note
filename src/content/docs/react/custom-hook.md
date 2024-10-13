@@ -3,11 +3,13 @@ title: 커스텀 훅
 description: 반복적으로 사용되는 논리를 커스텀 훅으로 만들어 여러 컴포넌트에서 재사용하는 방법을 알아봅니다.
 ---
 
-커스텀 훅은 React가 기본적으로 제공하는 훅을 호출할 수 있는 함수입니다. 여러 컴포넌트에서 반복적으로 사용되는 논리를 캡슐화하여 재사용할 수 있습니다.
+커스텀 훅은 `use`로 시작하는 이름을 가진 함수로, React 훅을 호출할 수 있습니다.
+
+반복되는 논리를 커스텀 훅으로 정의하면 코드 재사용성과 테스트 용이성이 높아집니다.
 
 ## 사용 방법
 
-`useState`를 사용하여 다음과 같은 간단한 카운터를 작성할 수 있습니다.
+다음 카운터 앱을 마이그레이션하면서 사용 방법을 알아보겠습니다.
 
 ```tsx
 import { useState } from 'react';
@@ -25,16 +27,15 @@ export default function App() {
 }
 ```
 
-커스텀 훅을 사용하여 위 코드를 마이그레이션하면 다음과 같이 작성할 수 있습니다.
+커스텀 훅을 사용하여 카운터와 이를 감소/증가시키는 함수를 컴포넌트 외부로 이동시킬 수 있습니다.
 
-```tsx ins={3-9,13,19-20} del={12,17-18}
+```tsx ins={3-8,12,18-19} del={11,16-17}
 import { useState } from 'react';
 
 function useCount() {
   const [count, setCount] = useState(0);
-  const decrease = () => setCount((prev) => prev - 1);
   const increase = () => setCount((prev) => prev + 1);
-
+  const decrease = () => setCount((prev) => prev - 1);
   return [count, increase, decrease] as const;
 }
 
@@ -53,21 +54,19 @@ export default function App() {
 }
 ```
 
-## 의존성 배열에 커스텀 훅 전달
+## 커스텀 훅에서 반환하는 함수를 의존성 배열에 전달
 
 `useEffect`와 같이 의존성 배열을 사용하는 훅에서 커스텀 훅을 호출할 때는 주의가 필요합니다.
 
-`increase` 함수를 매 초마다 실행하기 위해 다음과 같이 코드를 작성할 수 있습니다. 하지만 이 코드에는 문제가 있으며, 버그를 발생시킬 수 있습니다.
+`increase` 함수를 매 초마다 실행하기 위해 다음과 같이 코드를 작성할 수 있습니다.
 
-```tsx ins={4, 15-20} collapse={5-10, 21-29}
+```tsx ins={13-18} collapse={1-12, 19-28}
 import { useEffect, useState } from 'react';
 
 function useCount() {
-  console.log('call useCount');
   const [count, setCount] = useState(0);
   const decrease = () => setCount((prev) => prev - 1);
   const increase = () => setCount((prev) => prev + 1);
-
   return [count, increase, decrease] as const;
 }
 
@@ -103,18 +102,16 @@ export default function App() {
 
 즉, 컴포넌트가 리렌더링될 때마다 `increase` 함수가 새로 생성되어 타이머가 계속 새로 생성됩니다.
 
-위 예시 코드는 클린업 함수로 인해 이전 타이머를 제거하고 새로 생성하기 때문에 메모리와 관련된 문제는 발생하지 않습니다. 하지만, 다음과 같은 불필요한 연산을 수행하여 CPU 사이클을 낭비하고 있습니다.
+위 예시 코드는 클린업 함수로 인해 이전 타이머를 제거하고 새로 생성하기 때문에 메모리와 관련된 문제는 발생하지 않지만, 다음과 같은 불필요한 연산을 수행하여 CPU 사이클을 낭비하고 있습니다.
 
-- 로직이 변하지 않는 `increase`, `decrease` 함수가 계속해서 재생성되고 있습니다.
+- 로직이 변하지 않는 `increase`, `decrease` 함수가 계속해서 새로 생성되고 있습니다.
 - 의미 없이 기존 타이머를 제거하고 새 타이머를 생성하는 연산이 반복되고 있습니다.
 
 이 문제는 `increase` 함수가 재생성되는 것을 방지하여 해결할 수 있습니다. 이를 위해 [메모이제이션](/react/memoization)을 사용합니다.
 
 ### 메모이제이션
 
-캐싱해야 할 값이 함수이므로 `useCallback`을 사용합니다.
-
-메모이제이션을 위해 `increase`, `decrease` 함수에 `useCallback`을 사용합니다.
+`increase`, `decrease` 함수를 캐싱하기 위해 `useCallback`을 사용합니다.
 
 ```tsx del={3-4} ins={5-6}
 function useCount() {
@@ -123,11 +120,11 @@ function useCount() {
   const increase = () => setCount((prev) => prev + 1);
   const decrease = useCallback(() => setCount((prev) => prev - 1), []);
   const increase = useCallback(() => setCount((prev) => prev + 1), []);
-
   return [count, increase, decrease] as const;
 }
 ```
 
-`useCallback`을 사용해 함수를 메모하면 `useCount`가 호출되어도 `increase`, `decrease` 함수가 새로 생성되지 않습니다.
+이제 `increase`, `decrease` 함수는 다음 경우에만 새로 생성됩니다.
 
-오직 `useCallback`의 두 번째 인자인 의존성 배열의 요소가 변경되는 경우에만 새로운 함수가 반환됩니다.
+- `useCount`가 호출되어도 `increase`, `decrease` 함수가 새로 생성되지 않습니다.
+- 의존성 배열의 요소가 변경되는 경우에만 새로운 함수가 생성됩니다.

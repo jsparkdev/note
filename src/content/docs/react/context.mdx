@@ -1,6 +1,6 @@
 ---
-title: Context를 사용하여 데이터 공유하기
-description: React Context를 사용하여 Props Drilling을 피하는 방법을 알아봅니다.
+title: Context를 사용하여 컴포넌트 간 데이터 공유하기
+description: React Context를 사용하여 Props Drilling 없이 데이터를 여러 하위 컴포넌트에 전달하는 방법을 알아봅니다.
 ---
 
 Context는 **자주 변경되지 않는** 데이터를 **Props Drilling 없이** **여러 하위 컴포넌트에 전달**하기 위해 사용할 수 있는 기능입니다.
@@ -8,8 +8,8 @@ Context는 **자주 변경되지 않는** 데이터를 **Props Drilling 없이**
 import { Aside, Steps } from '@astrojs/starlight/components';
 
 <Aside type="tip">
-- 데이터가 자주 변경된다면 [zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)와 같은 전역 상태 관리 라이브러리를 사용하는 것이 권장됩니다.
-- Props Drilling이 거의 없다면 상태를 부모 컴포넌트로 이동하여 공유하는 것이 권장됩니다.
+- 공유할 데이터가 자주 변경된다면 [zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)와 같은 전역 상태 관리 라이브러리를 사용하는 것을 권장합니다.
+- 공유할 데이터를 전달할 때 Props Drilling이 거의 없다면 데이터를 부모 컴포넌트로 이동하는 것을 권장합니다.
 </Aside>
 
 ## 사용 방법
@@ -17,7 +17,7 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 <Aside type="caution">
 이 문서는 React 19 이상의 버전에서 컨텍스트를 사용하는 방법을 설명합니다.
 
-업그레이드가 필요하다면 [이 문서](https://react.dev/blog/2024/04/25/react-19-upgrade-guide)를 참조하세요.
+업그레이드가 필요하다면 [이 문서](https://react.dev/blog/2024/04/25/react-19-upgrade-guide#installing)를 참조하세요.
 </Aside>
 
 다음은 컨텍스트를 사용해 여러 하위 컴포넌트에 데이터를 전달하는 방법을 보여줍니다.
@@ -25,7 +25,7 @@ import { Aside, Steps } from '@astrojs/starlight/components';
 <Steps>
   1. 상태를 가진 최상위 컴포넌트와 상태를 전달받아 사용하는 최하위 컴포넌트가 포함된 코드를 작성합니다.
 
-      이 코드는 Props Drilling으로 인한 비효율이 발생하므로 컨텍스트를 사용하여 이 문제를 해결할 수 있습니다.
+      이 코드는 Props Drilling으로 인한 비효율이 발생하므로 컨텍스트를 사용하여 문제를 해결할 수 있습니다.
 
       ```tsx
       import { useState } from "react";
@@ -61,12 +61,12 @@ import { Aside, Steps } from '@astrojs/starlight/components';
       ```
 
       <Aside title="코드 설명">
-        - `App` 컴포넌트는 고유한 상태를 생성하여 이를 `Outer` 컴포넌트에 전달합니다.
-        - `Outer` 컴포넌트는 상태를 전달받아 이를 `Inner` 컴포넌트에 전달합니다.
-        - `Inner` 컴포넌트는 상태를 전달받아 이를 화면에 표시합니다.
+        - `App` 컴포넌트는 상태를 생성하여 `Outer` 컴포넌트에 전달합니다.
+        - `Outer` 컴포넌트는 상태를 전달받아 `Inner` 컴포넌트에 전달합니다.
+        - `Inner` 컴포넌트는 상태를 전달받아 화면에 표시합니다.
       </Aside>
 
-  2. `createContext` 함수를 사용하여 컨텍스트를 생성합니다.
+  2. `createContext`를 사용하여 컨텍스트를 생성합니다.
 
       ```tsx ins={3} "createContext"
       import { createContext, useState } from "react";
@@ -98,7 +98,7 @@ import { Aside, Steps } from '@astrojs/starlight/components';
         );
       }
       ```
-  4. 컨텍스트의 `value` 속성의 값으로 상태를 제공합니다.
+  4. 컨텍스트의 `value` 속성에 상태를 전달합니다.
 
       ```tsx {8} collapse={1-7, 11-17}
       export default function App() {
@@ -119,11 +119,9 @@ import { Aside, Steps } from '@astrojs/starlight/components';
         );
       }
       ```
-  5. 이제 하위 요소들은 `use` 훅을 사용하여 컨텍스트에 제공된 값을 가져와 사용할 수 있습니다.
+  5. 이제 하위 컴포넌트에서 `use` 훅을 사용하여 컨텍스트의 `value` 속성에 제공된 값을 가져와 사용할 수 있습니다. 더 이상 상태를 props로 전달할 필요가 없으므로 모두 제거합니다.
 
-     그리고 이제 더이상 상태를 props로 전달할 필요가 없으므로 모두 제거합니다.
-
-      ```tsx del={5, 10, 16, 30} ins={6, 11, 17-18, 31} " use " collapse={19-29, 32-39}
+      ```tsx del={5, 10, 16, 33} ins={6, 11, 17-21, 34} " use " collapse={22-32, 35-42}
       import { createContext, useState, use } from "react";
 
       const ValueContext = createContext<number | null>(null);
@@ -142,6 +140,9 @@ import { Aside, Steps } from '@astrojs/starlight/components';
       function Inner({ value }: { value: number }) {
       function Inner() {
         const value = use(ValueContext);
+        if (!value) {
+          throw new Error("Context value is not available");
+        }
         return <div>Inner : {value}</div>;
       }
 
@@ -166,9 +167,7 @@ import { Aside, Steps } from '@astrojs/starlight/components';
       ```
 </Steps>
 
-이제 Props Drilling 없이 하위 컴포넌트가 상위 컴포넌트에 있는 데이터를 직접 가져와 사용할 수 있게 되었습니다.
-
 ## 주의 사항
 
-- `value`로 전달한 값이 변경되면 컨텍스트로 래핑된 하위 컴포넌트가 모두 리렌더링됩니다.
-- 일반적으로 기본값에 `null`을 할당하고, 컴포넌트에서 값을 계산하여 `value`로 전달합니다.
+- `value`에 전달한 값이 변경되면 컨텍스트로 래핑한 하위 컴포넌트가 모두 리렌더링됩니다.
+- 일반적으로 기본값에 `null`을 할당하고, 컴포넌트에서 값을 계산하여 `value` 속성으로 전달합니다.
