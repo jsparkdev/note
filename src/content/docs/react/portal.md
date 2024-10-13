@@ -1,5 +1,5 @@
 ---
-title: 포탈
+title: Portal을 사용하여 모달 및 툴팁 생성하기
 description: React 포탈을 사용하여 컴포넌트를 원하는 위치에서 렌더링하는 방법을 알아봅니다.
 ---
 
