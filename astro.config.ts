@@ -6,9 +6,6 @@ import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-s
 
 export default defineConfig({
   site: "https://note.jspark.dev",
-  prefetch: {
-    defaultStrategy: "viewport",
-  },
   integrations: [
     starlight({
       plugins: [starlightThemeRapide()],

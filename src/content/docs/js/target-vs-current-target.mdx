@@ -1,52 +1,52 @@
 ---
-title: 이벤트의 target 및 currentTarget
+title: 이벤트의 target 및 currentTarget 속성
 description: JavaScript 이벤트 객체의 target 및 currentTarget 속성에 대해 알아봅니다.
 ---
 
-import { Aside } from '@astrojs/starlight/components';
+import { Aside, Steps } from '@astrojs/starlight/components';
 
 <Aside type="tip" title="사전 지식">
 이 게시물을 이해하기 위해서는 [이벤트 캡처링과 버블링](/js/event-capturing-and-bubbling)에 대한 지식이 필요합니다.
 </Aside>
 
-다음과 같은 HTML 파일을 작성합니다.
+<Steps>
+1. 다음과 같이 여러 요소가 중첩된 HTML 파일을 작성합니다.
 
-이 파일에는 5레벨 중첩된 `<div>` 태그와 최하위 요소인 `<button>` 태그가 포함되어 있습니다.
-
-```html
-<div id="level-1">
-  <div id="level-2">
-    <div id="level-3">
-      <div id="level-4">
-        <div id="level-5">
-          <button>Click!</button>
+    ```html
+    <div id="level-1">
+      <div id="level-2">
+        <div id="level-3">
+          <div id="level-4">
+            <div id="level-5">
+              <button>Click!</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-```
-id의 값이 `level-3`인 `<div>` 태그에 다음과 같이 이벤트 리스너를 추가합니다.
+    ```
+2. id가 `level-3`인 `<div>`요소에 이벤트 리스너를 추가합니다.
 
-이제 해당 요소를 클릭하면 `target` 및 `currentTarget` 속성의 값이 콘솔에 출력됩니다.
+    이제 이 요소를 클릭하면 `target` 및 `currentTarget` 속성의 값이 콘솔에 출력됩니다.
 
-```js
-const lv3 = document.querySelector('#level-3');
+    ```js
+    const lv3 = document.querySelector('#level-3');
 
-lv3.addEventListener('click', function (event) {
-  console.log('target', event.target);
-  console.log('currentTarget', event.currentTarget);
-});
-```
+    lv3.addEventListener('click', function (event) {
+      console.log('target', event.target);
+      console.log('currentTarget', event.currentTarget);
+    });
+    ```
 
-버튼을 클릭하여 이벤트를 발생시키면 콘솔에는 다음 메시지가 출력됩니다.
+3. 버튼을 클릭해 이벤트를 발생시키면 콘솔에 다음 메시지가 출력됩니다.
 
-```html
-target <button>​Click!​</button>​
-currentTarget <div id=​"level-3">​…​</div>​
-```
+    ```html
+    target <button>​Click!​</button>​
+    currentTarget <div id=​"level-3">​…​</div>​
+    ```
+</Steps>
 
-이 메시지를 통해 알 수 있는 점은 다음과 같습니다.
+## 결론
 
-- `target`의 값은 이벤트가 발생한 DOM 트리의 최하위 요소입니다. 이는 타겟 요소라고도 불립니다.
-- `currentTarget`의 값은 이벤트 핸들러가 연결된 요소입니다.
+- `target`: 이벤트가 발생한 DOM트리의 최하위 요소입니다. 즉, **타겟 요소**입니다.
+- `currentTarget`: 이벤트 핸들러가 추가된 요소입니다.
